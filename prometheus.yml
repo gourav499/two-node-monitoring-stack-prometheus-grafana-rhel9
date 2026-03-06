@@ -1,0 +1,23 @@
+# Prometheus Configuration
+# VM1 — Monitoring Server (192.168.244.128)
+
+global:
+  scrape_interval: 15s       # Pull metrics from targets every 15 seconds
+  evaluation_interval: 15s   # Evaluate alert rules every 15 seconds
+
+# Alert rules file
+rule_files:
+  - /opt/prometheus/alerts/node_alerts.yml
+
+# Scrape targets
+scrape_configs:
+
+  # Prometheus scrapes itself for self-monitoring
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["localhost:9090"]
+
+  # Node Exporter on VM2 — exposes system metrics
+  - job_name: "node_exporter"
+    static_configs:
+      - targets: ["192.168.244.132:9100"]
